@@ -89,7 +89,7 @@ textarea[readonly] {
 }
 
 input {
-  height: 28px;
+  height: 32px;
   background-color: var(--input-background);
 }
 

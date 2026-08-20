@@ -1,4 +1,4 @@
-import { faAngleLeft, faBars, faClover, faFilter, faGear, faGears, faListUl } from "@fortawesome/free-solid-svg-icons";
+import { faAngleLeft, faBars, faClover, faFilter, faGear, faGears, faGuitar, faListUl, faMusic } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import './Navbar.css'
 
@@ -10,7 +10,7 @@ export default function Navbar({ tab, setTab }) {
           ? <button className="nav-icon" onClick={() => setTab('filtros')}><FontAwesomeIcon icon={faAngleLeft} /></button>
           : <button className="nav-icon"><FontAwesomeIcon icon={faBars} /></button>
         }
-        <span className="nav-title">{tab === 'resultados' ? 'Resultados' : (<span><FontAwesomeIcon className="icone-titulo" icon={faClover} />Lotofiltro</span>)}</span>
+        <span className="nav-title">{tab === 'resultados' ? 'Resultados' : (<span><FontAwesomeIcon className="icone-titulo" icon={faMusic} /> Minhas cifras</span>)}</span>
         <button className="nav-icon"><FontAwesomeIcon icon={faGear} /></button>
       </nav>
       <nav className="nav-bottom">

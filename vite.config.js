@@ -8,4 +8,10 @@ export default defineConfig({
     minify: 'oxc',
     sourcemap: false,
   },
+  resolve: {
+    dedupe: ['react', 'react-dom'],
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'tab-sketch/react'],
+  },
 })

@@ -12,6 +12,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 32px;
 }
 
 .card-header-info {
@@ -78,4 +79,32 @@
 
 .card-hint-button:active {
   color: var(--color-white-active);
+}
+
+.card-title-input {
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  background-color: transparent;
+  border: 1px solid var(--border-1);
+  border-radius: var(--border-radius);
+  color: inherit;
+  padding: 2px 6px;
+  outline: none;
+}
+
+.card-title-input:focus {
+  border-color: var(--border-2);
+}
+
+.card-row {
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }

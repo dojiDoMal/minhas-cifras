@@ -92,3 +92,67 @@
   color: #666;
   cursor: not-allowed;
 }
+
+.btn-flutuante {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--purple-1);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn-flutuante:hover {
+  background-color: var(--purple-2);
+}
+
+.btn-flutuante:active {
+  background-color: var(--purple-3);
+}
+
+.floating-menu {
+  position: fixed;
+  bottom: 80px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  z-index: 1000;
+}
+
+.floating-menu-acoes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.btn-flutuante-acao {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background-color: var(--purple-1);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn-flutuante-acao:hover {
+  background-color: var(--purple-2);
+}
+
+.btn-flutuante-acao:active {
+  background-color: var(--purple-3);
+}
