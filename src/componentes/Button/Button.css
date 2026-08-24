@@ -156,3 +156,13 @@
 .btn-flutuante-acao:active {
   background-color: var(--purple-3);
 }
+
+.btn-large {
+  padding-top: calc(8px + 8px);
+  padding-bottom: calc(8px + 8px);
+}
+
+.btn-text-center {
+  justify-content: center;
+  text-align: center;
+}

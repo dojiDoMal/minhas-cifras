@@ -8,6 +8,25 @@
   background-color: var(--background-1);
 }
 
+.card-clickable {
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.1s ease;
+}
+
+.card-clickable:hover {
+  border-color: var(--border-2);
+  background-color: var(--background-2, var(--background-1));
+}
+
+.card-clickable:active {
+  background-color: var(--background-3, var(--background-2));
+}
+
+.card-clickable:focus-visible {
+  outline: 2px solid var(--border-2);
+  outline-offset: 2px;
+}
+
 .card-header {
   display: flex;
   justify-content: space-between;

@@ -20,6 +20,7 @@
     "@fortawesome/react-fontawesome": "3.5.0",
     "react": "18.0.0",
     "react-dom": "18.0.0",
+    "react-router-dom": "^7.18.2",
     "tab-sketch": "file:../tab-sketch/tab-sketch-1.0.0-beta.1.tgz"
   },
   "devDependencies": {

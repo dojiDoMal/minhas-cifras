@@ -11,9 +11,16 @@ export const TipoBotao = {
   FLUTUANTE_ACAO: 'flutuante-acao',
 }
 
-export default function Button({ tipo = TipoBotao.AUXILIAR, icon, label, ...props }) {
+export default function Button({ tipo = TipoBotao.AUXILIAR, icon, label, large, textAlign, className, ...props }) {
+  const classes = [
+    `btn-${tipo}`,
+    large && 'btn-large',
+    textAlign === 'center' && 'btn-text-center',
+    className,
+  ].filter(Boolean).join(' ')
+
   return (
-    <button className={`btn-${tipo}`} {...props}>
+    <button className={classes} {...props}>
       {icon && <FontAwesomeIcon icon={icon} />}
       {label && <span>{label}</span>}
     </button>

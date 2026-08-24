@@ -4,7 +4,7 @@ import { faPen } from '@fortawesome/free-solid-svg-icons'
 import Button, { TipoBotao } from '../Button/Button'
 import './Card.css'
 
-export default function Card({ icon, iconClass, iconBadge, title, subtitle, action, children, showButtonHint, allowTitleChange, onTituloChange, row, gap }) {
+export default function Card({ icon, iconClass, iconBadge, title, subtitle, action, children, showButtonHint, allowTitleChange, onTituloChange, row, gap, clickable, onClick }) {
   const [editando, setEditando] = useState(false)
   const [tituloTemp, setTituloTemp] = useState(title)
   const inputRef = useRef(null)
@@ -40,7 +40,18 @@ export default function Card({ icon, iconClass, iconBadge, title, subtitle, acti
   }
 
   return (
-    <div className={`card${row ? ' card-row' : ''}`}>
+    <div
+      className={`card${row ? ' card-row' : ''}${clickable ? ' card-clickable' : ''}`}
+      onClick={clickable ? onClick : undefined}
+      role={clickable ? 'button' : undefined}
+      tabIndex={clickable ? 0 : undefined}
+      onKeyDown={clickable ? (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onClick?.(e)
+        }
+      } : undefined}
+    >
       <div className='card-header'>
         <div className='card-header-info'>
           {(icon || iconBadge) && (
