@@ -7,14 +7,26 @@ export const TipoBotao = {
   DISCRETO: 'discreto',
   AUXILIAR: 'auxiliar',
   PRIMARIO: 'primario',
+  SECUNDARIO: 'secundario',
   FLUTUANTE: 'flutuante',
   FLUTUANTE_ACAO: 'flutuante-acao',
 }
 
-export default function Button({ tipo = TipoBotao.AUXILIAR, icon, label, large, textAlign, className, ...props }) {
+export default function Button({
+  tipo = TipoBotao.AUXILIAR,
+  icon,
+  label,
+  tall,
+  small,
+  textAlign,
+  className,
+  ...props
+}) {
+
   const classes = [
     `btn-${tipo}`,
-    large && 'btn-large',
+    tall && 'btn-tall',
+    small && 'btn-small',
     textAlign === 'center' && 'btn-text-center',
     className,
   ].filter(Boolean).join(' ')

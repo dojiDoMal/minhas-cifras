@@ -8,6 +8,11 @@
   background-color: var(--background-1);
 }
 
+.card-editing {
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+
 .card-clickable {
   cursor: pointer;
   transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.1s ease;
@@ -112,7 +117,30 @@
   outline: none;
 }
 
+.card-title-input::placeholder {
+  font-style: italic;
+}
+
 .card-title-input:focus {
+  border-color: var(--border-2);
+}
+
+.card-subtitle-input {
+  font-size: 0.8rem;
+  font-family: inherit;
+  background-color: transparent;
+  border: 1px solid var(--border-1);
+  border-radius: var(--border-radius);
+  color: var(--color-white-active);
+  padding: 2px 6px;
+  outline: none;
+}
+
+.card-subtitle-input::placeholder {
+  font-style: italic;
+}
+
+.card-subtitle-input:focus {
   border-color: var(--border-2);
 }
 

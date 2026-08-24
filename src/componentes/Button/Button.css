@@ -93,6 +93,36 @@
   cursor: not-allowed;
 }
 
+.btn-secundario {
+  width: 100%;
+  padding: 0.6rem;
+  background: transparent;
+  color: var(--purple-1);
+  border: 1px solid var(--purple-1);
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.btn-secundario:hover {
+  background: transparent;
+  color: var(--purple-2);
+  border-color: var(--purple-2);
+}
+
+.btn-secundario:active {
+  background: transparent;
+  color: var(--purple-3);
+  border-color: var(--purple-3);
+}
+
+.btn-secundario:disabled {
+  background: transparent;
+  color: #666;
+  border-color: #333;
+  cursor: not-allowed;
+}
+
 .btn-flutuante {
   width: 56px;
   height: 56px;
@@ -118,7 +148,7 @@
 
 .floating-menu {
   position: fixed;
-  bottom: 80px;
+  bottom: 134px;
   right: 24px;
   display: flex;
   flex-direction: column;
@@ -157,9 +187,13 @@
   background-color: var(--purple-3);
 }
 
-.btn-large {
+.btn-tall {
   padding-top: calc(8px + 8px);
   padding-bottom: calc(8px + 8px);
+}
+
+.btn-small {
+  width: unset;
 }
 
 .btn-text-center {

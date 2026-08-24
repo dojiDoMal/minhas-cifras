@@ -1,19 +1,24 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import { store } from './store'
 import './index.css'
 import App from './App.jsx'
 import './App.css'
+import NovaCifra from './paginas/NovaCifra.jsx'
 import EdicaoRitmo from './paginas/EdicaoRitmo.jsx'
 
 const router = createBrowserRouter([
-  { path: '/', element: <Navigate to="/edicao-cifra" replace /> },
-  { path: '/edicao-cifra', element: <App /> },
+  { path: '/', element: <App /> },
+  { path: '/edicao-cifra', element: <NovaCifra /> },
   { path: '/edicao-cifra/edicao-ritmo', element: <EdicaoRitmo /> },
 ])
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </StrictMode>,
 )
