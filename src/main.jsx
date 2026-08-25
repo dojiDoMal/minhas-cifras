@@ -8,11 +8,14 @@ import App from './App.jsx'
 import './App.css'
 import NovaCifra from './paginas/NovaCifra.jsx'
 import EdicaoRitmo from './paginas/EdicaoRitmo.jsx'
+import ConsultaCifra from './paginas/ConsultaCifra.jsx'
 
 const router = createBrowserRouter([
   { path: '/', element: <App /> },
   { path: '/edicao-cifra', element: <NovaCifra /> },
   { path: '/edicao-cifra/edicao-ritmo', element: <EdicaoRitmo /> },
+  { path: '/consulta-cifra/:id', element: <ConsultaCifra /> },
+  { path: '/edicao-cifra/:id', element: <NovaCifra /> },
 ])
 
 createRoot(document.getElementById('root')).render(

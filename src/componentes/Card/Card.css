@@ -37,6 +37,7 @@
   justify-content: space-between;
   align-items: center;
   height: 32px;
+  width: stretch;
 }
 
 .card-header-info {
@@ -146,7 +147,8 @@
 
 .card-row {
   justify-content: space-between;
-  flex-direction: row;
+  flex-direction: row !important;
+  width: stretch;
   align-items: center;
 }
 

@@ -15,6 +15,7 @@ function Card({
   showButtonHint,
   allowTitleChange,
   allowEdit,
+  hideHeader,
   onTituloChange,
   onSubtituloChange,
   row,
@@ -125,56 +126,58 @@ function Card({
         }
       } : undefined}
     >
-      <div className='card-header'>
-        <div className='card-header-info'>
-          {(icon || iconBadge) && (
-            <span className='card-header-icon-wrapper'>
-              {icon && <span className={`card-header-icon ${iconClass ?? ''}`}><FontAwesomeIcon icon={icon} /></span>}
-              {iconBadge}
-            </span>
-          )}
-          <label ref={editWrapperRef}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              {editando ? (
-                <input
-                  ref={titleInputRef}
-                  className='card-title-input'
-                  value={tituloTemp}
-                  placeholder={tituloOld}
-                  onChange={(e) => setTituloTemp(e.target.value)}
-                  onBlur={handleBlur}
-                  onKeyDown={handleKeyDown}
-                />
-              ) : (
-                <>
-                  <span>{title}</span>
-                  {allowTitleChange && (
-                    <Button tipo={TipoBotao.DISCRETO} icon={faPen} onClick={iniciarEdicao} />
-                  )}
-                </>
-              )}
-              {showButtonHint && (<Button tipo={TipoBotao.DISCRETO_ALT} label={'?'} />)}
-            </div>
-            {(subtitle || (editando && allowEdit)) && (editando && allowEdit
-              ? (
-                <input
-                  ref={subtitleInputRef}
-                  className='card-subtitle-input'
-                  value={subtituloTemp}
-                  placeholder={subtituloOld}
-                  onChange={(e) => setSubtituloTemp(e.target.value)}
-                  onBlur={handleBlur}
-                  onKeyDown={handleKeyDown}
-                />
-              )
-              : <span className='card-subtitle'>{subtitle}</span>
+      {!hideHeader && (
+        <div className='card-header'>
+          <div className='card-header-info'>
+            {(icon || iconBadge) && (
+              <span className='card-header-icon-wrapper'>
+                {icon && <span className={`card-header-icon ${iconClass ?? ''}`}><FontAwesomeIcon icon={icon} /></span>}
+                {iconBadge}
+              </span>
             )}
-          </label>
+            <label ref={editWrapperRef}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {editando ? (
+                  <input
+                    ref={titleInputRef}
+                    className='card-title-input'
+                    value={tituloTemp}
+                    placeholder={tituloOld}
+                    onChange={(e) => setTituloTemp(e.target.value)}
+                    onBlur={handleBlur}
+                    onKeyDown={handleKeyDown}
+                  />
+                ) : (
+                  <>
+                    <span>{title}</span>
+                    {allowTitleChange && (
+                      <Button tipo={TipoBotao.DISCRETO} icon={faPen} onClick={iniciarEdicao} />
+                    )}
+                  </>
+                )}
+                {showButtonHint && (<Button tipo={TipoBotao.DISCRETO_ALT} label={'?'} />)}
+              </div>
+              {(subtitle || (editando && allowEdit)) && (editando && allowEdit
+                ? (
+                  <input
+                    ref={subtitleInputRef}
+                    className='card-subtitle-input'
+                    value={subtituloTemp}
+                    placeholder={subtituloOld}
+                    onChange={(e) => setSubtituloTemp(e.target.value)}
+                    onBlur={handleBlur}
+                    onKeyDown={handleKeyDown}
+                  />
+                )
+                : <span className='card-subtitle'>{subtitle}</span>
+              )}
+            </label>
+          </div>
+          {action}
         </div>
-        {action}
-      </div>
+      )}
       {children && (
-        <div className='card-content' style={gap != null ? { gap: `${gap * 8}px` } : undefined}>{children}</div>
+        <div className={'card-content' + (row ? ' card-row' : '')} style={gap != null ? { gap: `${gap * 8}px` } : undefined}>{children}</div>
       )}
     </div>
   )

@@ -29,3 +29,9 @@
   --border-2: #3b444f;
   --border-radius: 8px;
 }
+
+div.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

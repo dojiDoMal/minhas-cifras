@@ -1,6 +1,6 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit'
 
-// Tipos de bloco que compõem uma cifra
+// Tipos de bloco que compõem uma seção
 export const TipoBloco = {
   RITMO: 'ritmo',
   ACORDES: 'acordes',
@@ -14,6 +14,8 @@ function dadosIniciais(tipo) {
     case TipoBloco.RITMO:
       return { pattern: '', timeSignature: [4, 4] }
     case TipoBloco.ACORDES:
+      // acordes: Array<{ nome: string, shapeVariant: number }>
+      // shapeVariant indexa a variante do desenho do acorde (0 = primeira, -1 = última)
       return { acordes: [] }
     case TipoBloco.TABLATURA:
       return { linhas: [] }
@@ -24,9 +26,37 @@ function dadosIniciais(tipo) {
   }
 }
 
+// Cria uma nova seção. Uma seção agrupa blocos e define os parâmetros
+// musicais herdados por eles (capo, tuning, bpm).
+function novaSecao({ titulo, capo, tuning, bpm, blocos } = {}) {
+  return {
+    id: nanoid(),
+    titulo: titulo ?? '',
+    capo: capo ?? 0,
+    tuning: tuning ?? 0,
+    bpm: bpm ?? 0,
+    blocos: blocos ?? [],
+  }
+}
+
+function novoBloco({ tipo, titulo, dados } = {}) {
+  return {
+    id: nanoid(),
+    tipo,
+    titulo: titulo ?? '',
+    dados: dados ?? dadosIniciais(tipo),
+  }
+}
+
 const estadoInicial = {
   titulo: '',
-  blocos: [],
+  secoes: [novaSecao()],
+}
+
+// Resolve a seção alvo: usa `secaoId` se informado, senão a primeira seção.
+function encontrarSecao(state, secaoId) {
+  if (secaoId != null) return state.secoes.find((s) => s.id === secaoId)
+  return state.secoes[0]
 }
 
 const cifraSlice = createSlice({
@@ -37,60 +67,98 @@ const cifraSlice = createSlice({
       state.titulo = action.payload
     },
 
-    // Adiciona um novo bloco. payload: { tipo, titulo?, dados? }
+    // Adiciona uma nova seção. payload: { titulo?, capo?, tuning?, bpm? }
+    adicionarSecao: {
+      reducer(state, action) {
+        state.secoes.push(action.payload)
+      },
+      prepare(dados = {}) {
+        return { payload: novaSecao(dados) }
+      },
+    },
+
+    // Atualiza (merge) os parâmetros de uma seção.
+    // payload: { id, titulo?, capo?, tuning?, bpm? }
+    atualizarSecao(state, action) {
+      const { id, ...campos } = action.payload
+      const secao = state.secoes.find((s) => s.id === id)
+      if (!secao) return
+      for (const [chave, valor] of Object.entries(campos)) {
+        if (valor !== undefined) secao[chave] = valor
+      }
+    },
+
+    // Remove uma seção pelo id. payload: id
+    removerSecao(state, action) {
+      state.secoes = state.secoes.filter((s) => s.id !== action.payload)
+    },
+
+    // Adiciona um novo bloco a uma seção.
+    // payload: { tipo, titulo?, dados?, secaoId? }
     adicionarBloco: {
       reducer(state, action) {
-        state.blocos.push(action.payload)
+        const { secaoId, bloco } = action.payload
+        const secao = encontrarSecao(state, secaoId)
+        if (secao) secao.blocos.push(bloco)
       },
-      prepare({ tipo, titulo, dados } = {}) {
+      prepare({ tipo, titulo, dados, secaoId } = {}) {
         return {
           payload: {
-            id: nanoid(),
-            tipo,
-            titulo: titulo ?? '',
-            dados: dados ?? dadosIniciais(tipo),
+            secaoId,
+            bloco: novoBloco({ tipo, titulo, dados }),
           },
         }
       },
     },
 
-    // Atualiza o título de um bloco. payload: { id, titulo }
+    // Atualiza o título de um bloco. payload: { id, titulo, secaoId? }
     setTituloBloco(state, action) {
-      const { id, titulo } = action.payload
-      const bloco = state.blocos.find((b) => b.id === id)
+      const { id, titulo, secaoId } = action.payload
+      const secao = encontrarSecao(state, secaoId)
+      const bloco = secao?.blocos.find((b) => b.id === id)
       if (bloco) bloco.titulo = titulo
     },
 
-    // Atualiza (merge) os dados de um bloco. payload: { id, dados }
+    // Atualiza (merge) os dados de um bloco. payload: { id, dados, secaoId? }
     atualizarDadosBloco(state, action) {
-      const { id, dados } = action.payload
-      const bloco = state.blocos.find((b) => b.id === id)
+      const { id, dados, secaoId } = action.payload
+      const secao = encontrarSecao(state, secaoId)
+      const bloco = secao?.blocos.find((b) => b.id === id)
       if (bloco) bloco.dados = { ...bloco.dados, ...dados }
     },
 
-    // Remove um bloco pelo id. payload: id
+    // Remove um bloco pelo id. payload: { id, secaoId? } ou id (usa a primeira seção)
     removerBloco(state, action) {
-      state.blocos = state.blocos.filter((b) => b.id !== action.payload)
+      const { id, secaoId } =
+        typeof action.payload === 'object' ? action.payload : { id: action.payload }
+      const secao = encontrarSecao(state, secaoId)
+      if (secao) secao.blocos = secao.blocos.filter((b) => b.id !== id)
     },
 
-    // Reordena um bloco. payload: { de, para } (índices)
+    // Reordena um bloco dentro de uma seção.
+    // payload: { de, para, secaoId? } (índices)
     moverBloco(state, action) {
-      const { de, para } = action.payload
-      if (de < 0 || de >= state.blocos.length) return
-      if (para < 0 || para >= state.blocos.length) return
-      const [bloco] = state.blocos.splice(de, 1)
-      state.blocos.splice(para, 0, bloco)
+      const { de, para, secaoId } = action.payload
+      const secao = encontrarSecao(state, secaoId)
+      if (!secao) return
+      if (de < 0 || de >= secao.blocos.length) return
+      if (para < 0 || para >= secao.blocos.length) return
+      const [bloco] = secao.blocos.splice(de, 1)
+      secao.blocos.splice(para, 0, bloco)
     },
 
     // Zera a cifra inteira
     resetCifra() {
-      return estadoInicial
+      return { titulo: '', secoes: [novaSecao()] }
     },
   },
 })
 
 export const {
   setTitulo,
+  adicionarSecao,
+  atualizarSecao,
+  removerSecao,
   adicionarBloco,
   setTituloBloco,
   atualizarDadosBloco,
@@ -101,10 +169,27 @@ export const {
 
 // Selectors
 export const selectCifra = (state) => state.cifra
-export const selectBlocos = (state) => state.cifra.blocos
-export const selectBlocoPorId = (id) => (state) =>
-  state.cifra.blocos.find((b) => b.id === id)
+export const selectSecoes = (state) => state.cifra.secoes
+export const selectSecaoPorId = (id) => (state) =>
+  state.cifra.secoes.find((s) => s.id === id)
+
+// Blocos de todas as seções, achatados (útil para telas que ainda tratam
+// a cifra como uma lista única de blocos).
+export const selectBlocos = (state) =>
+  state.cifra.secoes.flatMap((s) => s.blocos)
+
+export const selectBlocosDaSecao = (secaoId) => (state) =>
+  state.cifra.secoes.find((s) => s.id === secaoId)?.blocos ?? []
+
+export const selectBlocoPorId = (id) => (state) => {
+  for (const secao of state.cifra.secoes) {
+    const bloco = secao.blocos.find((b) => b.id === id)
+    if (bloco) return bloco
+  }
+  return undefined
+}
+
 export const selectBlocosPorTipo = (tipo) => (state) =>
-  state.cifra.blocos.filter((b) => b.tipo === tipo)
+  state.cifra.secoes.flatMap((s) => s.blocos).filter((b) => b.tipo === tipo)
 
 export default cifraSlice.reducer

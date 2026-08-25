@@ -62,14 +62,21 @@ export default function EdicaoRitmo() {
       </nav>
 
       <div className="main">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div className='main-content'>
           <Card
             title={tituloCardRitmo}
             allowTitleChange
-            action={<Button tipo={TipoBotao.AUXILIAR} icon={faTrash} label="Limpar" onClick={() => {
-              editorRef?.current?.clear()
-              setPattern('')
-            }} />}
+            action={
+              <Button
+                tipo={TipoBotao.AUXILIAR}
+                icon={faTrash}
+                label="Limpar"
+                onClick={() => {
+                  editorRef?.current?.clear()
+                  setPattern('')
+                }}
+              />
+            }
             onTituloChange={(value) => { setTituloCardRitmo(value) }}
           >
             <RhythmEditor
@@ -77,7 +84,7 @@ export default function EdicaoRitmo() {
               onChange={(value) => {
                 setPattern(value)
               }}
-              timeSignature={[4, 4]} 
+              timeSignature={[4, 4]}
             />
             <Spacer />
             <Button
@@ -91,7 +98,7 @@ export default function EdicaoRitmo() {
           <Card
             title={'Biblioteca de ritmos'}
             gap={1}
-            action={<Button tipo={TipoBotao.AUXILIAR} icon={faSearch} label="Buscar" onClick={() => {console.log('TODO')}} />}
+            action={<Button tipo={TipoBotao.AUXILIAR} icon={faSearch} label="Buscar" onClick={() => { console.log('TODO') }} />}
           >
             {RITMOS_PREDEFINIDOS.slice(0, ritmosVisiveis).map((ritmoPredefinido) => (
               <Card

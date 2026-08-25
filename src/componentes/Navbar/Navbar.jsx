@@ -1,5 +1,6 @@
 import { faBars, faGear, faHome, faMusic, faPen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import '../NavTop/NavTop.css'
 import './Navbar.css'
 
 export default function Navbar({ tab = 'home', onNovaCifra }) {

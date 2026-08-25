@@ -12,42 +12,6 @@
   align-items: center;
 }
 
-.nav-icon {
-  background: none;
-  border: none;
-  color: var(--color-white);
-  font-size: 1rem;
-  cursor: pointer;
-  padding: 0.2rem 0.2rem;
-}
-
-.nav-icon:hover {
-  color: var(--color-white-hover);
-}
-
-.nav-icon:active {
-  color: var(--color-white-active);
-}
-
-.nav-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  /*background: #111;*/
-  background: transparent;
-  padding: 0.75rem 1rem;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 10;
-}
-
-.nav-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
 .nav-bottom {
   display: flex;
   background-color: var(--background-1);
