@@ -1,0 +1,103 @@
+.painel-acordes {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-1);
+  border-top: 1px solid var(--border-1);
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+  transition: transform 0.25s ease;
+}
+
+/* Quando minimizado, desliza para baixo deixando apenas o handle visível. */
+.painel-acordes--minimizado {
+  transform: translateY(calc(100% - var(--painel-acordes-handle-altura, 28px)));
+}
+
+/* --- Handle de arrastar --- */
+.painel-acordes__handle {
+  --painel-acordes-handle-altura: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.painel-acordes__handle:active {
+  cursor: grabbing;
+}
+
+.painel-acordes__handle-barra {
+  width: 40px;
+  height: 4px;
+  border-radius: 100px;
+  background-color: var(--border-2);
+  transition: background-color 0.2s;
+}
+
+.painel-acordes__handle:hover .painel-acordes__handle-barra {
+  background-color: var(--color-white-ghost);
+}
+
+.painel-acordes__handle:focus-visible {
+  outline: none;
+}
+
+.painel-acordes__handle:focus-visible .painel-acordes__handle-barra {
+  background-color: var(--purple-1);
+}
+
+/* --- Conteúdo --- */
+.painel-acordes__conteudo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 8px 24px 24px;
+}
+
+.painel-acordes__label {
+  font-weight: 600;
+}
+
+.painel-acordes__busca {
+  width: 100%;
+  height: 32px;
+  padding: 24px 16px;
+  background-color: var(--input-background);
+  color: var(--color-white);
+  border: 1px solid var(--border-1);
+  border-radius: var(--border-radius);
+  outline: none;
+}
+
+.painel-acordes__busca::placeholder {
+  font-style: italic;
+  color: var(--color-white-ghost);
+}
+
+.painel-acordes__busca:focus {
+  border-color: var(--border-2);
+}
+
+.painel-acordes__grade {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+/* Acordes usam o padrão btn-auxiliar; aqui só ajustamos o alinhamento. */
+.painel-acordes__acorde {
+  justify-content: center;
+}
+
+.painel-acordes__rodape {
+  display: flex;
+}

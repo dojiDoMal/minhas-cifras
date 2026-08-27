@@ -20,7 +20,7 @@ body {
   margin: 0 auto;
   padding: 1rem 1rem;
   padding-top: calc(48px + 1rem);
-  padding-bottom: calc(48px + 2rem);
+  padding-bottom: 2rem;
 }
 
 .entrada {

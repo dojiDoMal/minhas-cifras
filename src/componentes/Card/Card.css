@@ -157,3 +157,16 @@
   flex-direction: column;
   gap: 16px;
 }
+
+/* Quando o conteúdo está em linha (vários tab-sketch-wrapper lado a lado),
+   mantém o espaçamento natural dos itens e habilita scroll horizontal
+   em vez de espremê-los. */
+.card-content.card-row {
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+}
+
+.card-content.card-row>* {
+  flex: 0 0 auto;
+}

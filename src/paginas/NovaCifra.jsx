@@ -1,9 +1,9 @@
-import { faGear, faPen, faPlus } from '@fortawesome/free-solid-svg-icons'
-import { RhythmDisplay } from 'tab-sketch/react'
-import { TipoBloco, selectBlocos } from '../store/cifraSlice'
+import { faGear, faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { ChordDisplay, RhythmDisplay, Section } from 'tab-sketch/react'
+import { TipoBloco, selectBlocos, removerBloco } from '../store/cifraSlice'
 import { useNavigate } from 'react-router-dom'
 import { useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import AppFooter from '../componentes/AppFooter/AppFooter'
 import Button, { FloatingMenu, TipoBotao } from '../componentes/Button/Button'
 import Card from '../componentes/Card/Card'
@@ -11,6 +11,7 @@ import NavTop from '../componentes/NavTop/NavTop'
 
 export default function NovaCifra() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const blocos = useSelector(selectBlocos)
 
   const [musica, setMusica] = useState('Música')
@@ -18,7 +19,7 @@ export default function NovaCifra() {
   const cardMusicaRef = useRef(null)
 
   return (
-    <div className="container">
+    <div className="container container-com-footer">
       <NavTop
         title="Nova cifra"
         onBack={() => navigate('/')}
@@ -38,25 +39,75 @@ export default function NovaCifra() {
             action={<Button icon={faPen} tipo={TipoBotao.AUXILIAR} label={'Editar'} onClick={() => cardMusicaRef.current?.iniciarEdicao()} />}
           />
 
-          {blocos.map((bloco) => (
-            <Card key={bloco.id} title={bloco.titulo} row>
-              {bloco.tipo === TipoBloco.RITMO && bloco.dados?.pattern && (
-                <RhythmDisplay
-                  pattern={bloco.dados.pattern}
-                  timeSignature={bloco.dados.timeSignature}
-                />
-              )}
-            </Card>
-          ))}
+          <Section chordTitleColor="#78aee0">
+            {blocos.map((bloco) => {
+              if (bloco.tipo === TipoBloco.ACORDES) {
+                return (
+                  <Card
+                    key={bloco.id}
+                    rowContent
+                    action={
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        <Button icon={faTrash} tipo={TipoBotao.AUXILIAR} label={'Remover'} onClick={() => dispatch(removerBloco(bloco.id))} />
+                        <Button icon={faPen} tipo={TipoBotao.AUXILIAR} label={'Editar'} onClick={() => navigate(`/edicao-cifra/edicao-acordes?bloco=${bloco.id}`)} />
+                      </div>
+                    }
+                  >
+                    {bloco.dados?.acordes?.map((ac, j) => {
+                      const nome = typeof ac === 'string' ? ac : ac.nome
+                      const shapeVariant = typeof ac === 'string' ? 0 : (ac.shapeVariant ?? 0)
+                      return <ChordDisplay key={j} chord={nome} shapeVariant={shapeVariant} />
+                    })}
+                  </Card>
+                )
+              }
+              if (bloco.tipo === TipoBloco.LETRA) {
+                return (
+                  <Card
+                    key={bloco.id}
+                    action={
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        <Button icon={faTrash} tipo={TipoBotao.AUXILIAR} label={'Remover'} onClick={() => dispatch(removerBloco(bloco.id))} />
+                        <Button icon={faPen} tipo={TipoBotao.AUXILIAR} label={'Editar'} onClick={() => navigate(`/edicao-cifra/edicao-letra?bloco=${bloco.id}`)} />
+                      </div>
+                    }
+                    title={bloco.titulo}
+                  >
+                    <pre style={{ whiteSpace: 'pre-wrap', margin: 0 }}>{bloco.dados?.texto}</pre>
+                  </Card>
+                )
+              }
+              return (
+                <Card
+                  key={bloco.id}
+                  rowContent
+                  action={
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <Button icon={faTrash} tipo={TipoBotao.AUXILIAR} label={'Remover'} onClick={() => dispatch(removerBloco(bloco.id))} />
+                      <Button icon={faPen} tipo={TipoBotao.AUXILIAR} label={'Editar'} onClick={() => navigate(`/edicao-cifra/edicao-ritmo?bloco=${bloco.id}`)} />
+                    </div>
+                  }
+                >
+                  <label style={{ flex: 1 }}>{bloco.titulo}</label>
+                  {bloco.tipo === TipoBloco.RITMO && bloco.dados?.pattern && (
+                    <RhythmDisplay
+                      pattern={bloco.dados.pattern}
+                      timeSignature={bloco.dados.timeSignature}
+                    />
+                  )}
+                </Card>
+              )
+            })}
+          </Section>
         </div>
 
         <FloatingMenu
           icon={faPlus}
           acoes={[
             { label: 'Tablatura', onClick: () => { /* ... */ } },
-            { label: 'Acordes', onClick: () => { /* ... */ } },
+            { label: 'Acordes', onClick: () => navigate('/edicao-cifra/edicao-acordes') },
             { label: 'Ritmo', onClick: () => navigate('/edicao-cifra/edicao-ritmo') },
-            { label: 'Letra', onClick: () => { /* ... */ } },
+            { label: 'Letra', onClick: () => navigate('/edicao-cifra/edicao-letra') },
           ]}
         />
       </div>

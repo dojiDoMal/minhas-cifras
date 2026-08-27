@@ -49,7 +49,7 @@ const ConsultaCifra = () => {
     if (b.tipo == TipoBloco.LETRA) {
       return (
         <Card hideHeader key={`lyrics-${i}`}>
-          <LyricsDisplay raw>{`[${b.titulo}]`}</LyricsDisplay>
+          <LyricsDisplay raw={true}>{`[${b.titulo}]`}</LyricsDisplay>
           <LyricsDisplay>{b.dados.texto}</LyricsDisplay>
         </Card>
       )
@@ -74,6 +74,7 @@ const ConsultaCifra = () => {
               capo={secao.capo}
               tuning={secao.tuning}
               bpm={secao.bpm}
+              chordTitleColor="#78aee0"
             >
               {secao.blocos?.map((b, i) => renderBloco(b, i))}
             </Section>

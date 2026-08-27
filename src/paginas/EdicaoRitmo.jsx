@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useRef, useState } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { faAngleLeft, faSearch, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { RhythmDisplay, RhythmEditor } from 'tab-sketch/react'
@@ -8,7 +8,7 @@ import Button, { TipoBotao } from '../componentes/Button/Button'
 import Card from '../componentes/Card/Card'
 import Spacer from '../componentes/Spacer/Spacer'
 import { RITMOS_PREDEFINIDOS } from '../ritmos'
-import { TipoBloco, adicionarBloco } from '../store/cifraSlice'
+import { TipoBloco, adicionarBloco, atualizarDadosBloco, setTituloBloco, selectBlocoPorId } from '../store/cifraSlice'
 
 const RITMOS_POR_PAGINA = 3
 
@@ -18,21 +18,42 @@ export default function EdicaoRitmo() {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [searchParams] = useSearchParams()
+
+  // Quando há `?bloco=<id>` na URL, estamos editando um bloco existente.
+  const blocoId = searchParams.get('bloco')
+  const blocoEmEdicao = useSelector(selectBlocoPorId(blocoId))
+  const editando = Boolean(blocoEmEdicao)
+
   const [ritmosVisiveis, setRitmosVisiveis] = useState(RITMOS_POR_PAGINA)
 
-  // Rascunho local do ritmo desenhado à mão. Só vira bloco ao clicar em "Adicionar".
-  const [tituloCardRitmo, setTituloCardRitmo] = useState('Ritmo 1')
-  const [pattern, setPattern] = useState('')
+  // Rascunho local do ritmo desenhado à mão. Ao editar, inicia com os dados do bloco.
+  const [tituloCardRitmo, setTituloCardRitmo] = useState(blocoEmEdicao?.titulo ?? 'Ritmo 1')
 
-  // Adiciona o ritmo desenhado à mão como bloco e volta para a edição da cifra
-  const adicionarRitmoManual = () => {
-    dispatch(
-      adicionarBloco({
-        tipo: TipoBloco.RITMO,
-        titulo: tituloCardRitmo,
-        dados: { pattern, timeSignature: [4, 4] },
-      }),
-    )
+  // Pattern inicial usado só para popular o editor na montagem. As edições
+  // subsequentes ficam no estado interno do RhythmEditor; o valor atual é lido
+  // pelo `onChange` (patternRef) na hora de salvar.
+  const patternInicial = blocoEmEdicao?.dados?.pattern ?? ''
+  const patternRef = useRef(patternInicial)
+
+  const timeSignature = blocoEmEdicao?.dados?.timeSignature ?? [4, 4]
+
+  // Adiciona o ritmo desenhado à mão como bloco (ou atualiza o existente)
+  // e volta para a edição da cifra.
+  const salvarRitmoManual = () => {
+    const pattern = patternRef.current
+    if (editando) {
+      dispatch(setTituloBloco({ id: blocoId, titulo: tituloCardRitmo }))
+      dispatch(atualizarDadosBloco({ id: blocoId, dados: { pattern, timeSignature } }))
+    } else {
+      dispatch(
+        adicionarBloco({
+          tipo: TipoBloco.RITMO,
+          titulo: tituloCardRitmo,
+          dados: { pattern, timeSignature: [4, 4] },
+        }),
+      )
+    }
     navigate('/edicao-cifra')
   }
 
@@ -57,7 +78,7 @@ export default function EdicaoRitmo() {
         <button className="nav-icon" onClick={() => navigate('/edicao-cifra')}>
           <FontAwesomeIcon icon={faAngleLeft} />
         </button>
-        <span className="nav-title">Edição de ritmo</span>
+        <span className="nav-title">{editando ? 'Editar ritmo' : 'Edição de ritmo'}</span>
         <span className="nav-icon" />
       </nav>
 
@@ -73,7 +94,7 @@ export default function EdicaoRitmo() {
                 label="Limpar"
                 onClick={() => {
                   editorRef?.current?.clear()
-                  setPattern('')
+                  patternRef.current = ''
                 }}
               />
             }
@@ -81,17 +102,18 @@ export default function EdicaoRitmo() {
           >
             <RhythmEditor
               ref={editorRef}
+              pattern={patternInicial}
               onChange={(value) => {
-                setPattern(value)
+                patternRef.current = value
               }}
-              timeSignature={[4, 4]}
+              timeSignature={timeSignature}
             />
             <Spacer />
             <Button
               tipo={TipoBotao.PRIMARIO}
-              label="Adicionar"
+              label={editando ? 'Salvar' : 'Adicionar'}
               textAlign='center'
-              onClick={adicionarRitmoManual}
+              onClick={salvarRitmoManual}
             />
           </Card>
 

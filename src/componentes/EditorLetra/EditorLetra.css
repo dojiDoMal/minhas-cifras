@@ -1,0 +1,80 @@
+/* Editor de letra com destaque de acordes (técnica de overlay).
+   As duas camadas (highlight e input) DEVEM compartilhar exatamente a mesma
+   tipografia e box model para que o texto fique alinhado pixel a pixel. */
+
+.editor-letra {
+  position: relative;
+  width: 100%;
+}
+
+/* Propriedades compartilhadas entre a camada de destaque e o textarea.
+   Qualquer alteração de fonte/espaçamento precisa valer para os dois. */
+.editor-letra__highlight,
+.editor-letra__input {
+  margin: 0;
+  padding: 0.6rem;
+  border: 1px solid var(--border-1);
+  border-radius: 6px;
+
+  font-family: monospace;
+  font-size: 1rem;
+  line-height: 1.4;
+  letter-spacing: normal;
+  tab-size: 4;
+
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Camada de trás: pinta o texto e os chips. Não recebe interação. */
+.editor-letra__highlight {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  color: var(--color-white);
+  background-color: var(--input-background);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Camada da frente: textarea transparente que recebe digitação/cursor.
+   O texto fica transparente (só o caret aparece), revelando o highlight atrás. */
+.editor-letra__input {
+  position: relative;
+  display: block;
+  width: 100%;
+  resize: vertical;
+
+  background-color: transparent;
+  color: transparent;
+  caret-color: var(--color-white);
+}
+
+.editor-letra__input::placeholder {
+  color: var(--color-white-ghost);
+}
+
+.editor-letra__input:focus {
+  outline: none;
+  border-color: var(--border-2);
+}
+
+/* Chip de acorde renderizado na camada de destaque.
+   IMPORTANTE: não usar padding/margin horizontal nem alterar a largura dos
+   caracteres. Como o texto real (incluindo os colchetes) continua no textarea
+   por baixo, o chip precisa ocupar exatamente a mesma largura para o alinhamento
+   não quebrar. Por isso usamos apenas cor de fundo e um leve arredondamento via
+   box-shadow (que não afeta o layout). */
+.editor-letra__chip {
+  border-radius: 3px;
+  background-color: var(--color-info-1);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 0 0 1px var(--color-info-1);
+}
+
+/* Colchetes esmaecidos dentro do chip. */
+.editor-letra__colchete {
+  opacity: 0.5;
+}

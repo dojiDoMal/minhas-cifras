@@ -19,6 +19,8 @@ function Card({
   onTituloChange,
   onSubtituloChange,
   row,
+  rowCard,
+  rowContent,
   gap,
   clickable,
   onClick
@@ -104,6 +106,11 @@ function Card({
     }
   }
 
+  // `row` mantém o comportamento antigo (linha no card inteiro e no conteúdo).
+  // `rowCard` / `rowContent` permitem controlar cada um separadamente.
+  const cardIsRow = row || rowCard
+  const contentIsRow = row || rowContent
+
   useImperativeHandle(ref, () => ({
     iniciarEdicao,
     confirmarEdicao,
@@ -114,72 +121,74 @@ function Card({
   }))
 
   return (
-    <div
-      className={`card${row ? ' card-row' : ''}${clickable ? ' card-clickable' : ''}${editando ? ' card-editing' : ''}`}
-      onClick={clickable ? onClick : undefined}
-      role={clickable ? 'button' : undefined}
-      tabIndex={clickable ? 0 : undefined}
-      onKeyDown={clickable ? (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault()
-          onClick?.(e)
-        }
-      } : undefined}
-    >
-      {!hideHeader && (
-        <div className='card-header'>
-          <div className='card-header-info'>
-            {(icon || iconBadge) && (
-              <span className='card-header-icon-wrapper'>
-                {icon && <span className={`card-header-icon ${iconClass ?? ''}`}><FontAwesomeIcon icon={icon} /></span>}
-                {iconBadge}
-              </span>
-            )}
-            <label ref={editWrapperRef}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                {editando ? (
-                  <input
-                    ref={titleInputRef}
-                    className='card-title-input'
-                    value={tituloTemp}
-                    placeholder={tituloOld}
-                    onChange={(e) => setTituloTemp(e.target.value)}
-                    onBlur={handleBlur}
-                    onKeyDown={handleKeyDown}
-                  />
-                ) : (
-                  <>
-                    <span>{title}</span>
-                    {allowTitleChange && (
-                      <Button tipo={TipoBotao.DISCRETO} icon={faPen} onClick={iniciarEdicao} />
-                    )}
-                  </>
-                )}
-                {showButtonHint && (<Button tipo={TipoBotao.DISCRETO_ALT} label={'?'} />)}
-              </div>
-              {(subtitle || (editando && allowEdit)) && (editando && allowEdit
-                ? (
-                  <input
-                    ref={subtitleInputRef}
-                    className='card-subtitle-input'
-                    value={subtituloTemp}
-                    placeholder={subtituloOld}
-                    onChange={(e) => setSubtituloTemp(e.target.value)}
-                    onBlur={handleBlur}
-                    onKeyDown={handleKeyDown}
-                  />
-                )
-                : <span className='card-subtitle'>{subtitle}</span>
+    <>
+      <div
+        className={`card${cardIsRow ? ' card-row' : ''}${clickable ? ' card-clickable' : ''}${editando ? ' card-editing' : ''}`}
+        onClick={clickable ? onClick : undefined}
+        role={clickable ? 'button' : undefined}
+        tabIndex={clickable ? 0 : undefined}
+        onKeyDown={clickable ? (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            onClick?.(e)
+          }
+        } : undefined}
+      >
+        {!hideHeader && (
+          <div className='card-header'>
+            <div className='card-header-info'>
+              {(icon || iconBadge) && (
+                <span className='card-header-icon-wrapper'>
+                  {icon && <span className={`card-header-icon ${iconClass ?? ''}`}><FontAwesomeIcon icon={icon} /></span>}
+                  {iconBadge}
+                </span>
               )}
-            </label>
+              <label ref={editWrapperRef}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  {editando ? (
+                    <input
+                      ref={titleInputRef}
+                      className='card-title-input'
+                      value={tituloTemp}
+                      placeholder={tituloOld}
+                      onChange={(e) => setTituloTemp(e.target.value)}
+                      onBlur={handleBlur}
+                      onKeyDown={handleKeyDown}
+                    />
+                  ) : (
+                    <>
+                      <span>{title}</span>
+                      {allowTitleChange && (
+                        <Button tipo={TipoBotao.DISCRETO} icon={faPen} onClick={iniciarEdicao} />
+                      )}
+                    </>
+                  )}
+                  {showButtonHint && (<Button tipo={TipoBotao.DISCRETO_ALT} label={'?'} />)}
+                </div>
+                {(subtitle || (editando && allowEdit)) && (editando && allowEdit
+                  ? (
+                    <input
+                      ref={subtitleInputRef}
+                      className='card-subtitle-input'
+                      value={subtituloTemp}
+                      placeholder={subtituloOld}
+                      onChange={(e) => setSubtituloTemp(e.target.value)}
+                      onBlur={handleBlur}
+                      onKeyDown={handleKeyDown}
+                    />
+                  )
+                  : <span className='card-subtitle'>{subtitle}</span>
+                )}
+              </label>
+            </div>
+            {action}
           </div>
-          {action}
-        </div>
-      )}
-      {children && (
-        <div className={'card-content' + (row ? ' card-row' : '')} style={gap != null ? { gap: `${gap * 8}px` } : undefined}>{children}</div>
-      )}
-    </div>
+        )}
+        {children && (
+          <div className={'card-content' + (contentIsRow ? ' card-row' : '')} style={gap != null ? { gap: `${gap * 8}px` } : undefined}>{children}</div>
+        )}
+      </div>
+    </>
   )
 }
 
