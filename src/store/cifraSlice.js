@@ -18,7 +18,8 @@ function dadosIniciais(tipo) {
       // shapeVariant indexa a variante do desenho do acorde (0 = primeira, -1 = última)
       return { acordes: [] }
     case TipoBloco.TABLATURA:
-      return { linhas: [] }
+      // tab: string única no formato de tablatura ASCII (compatível com TabEditor/TabDisplay)
+      return { tab: '' }
     case TipoBloco.LETRA:
       return { texto: '' }
     default:

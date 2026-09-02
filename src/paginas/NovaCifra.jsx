@@ -1,5 +1,5 @@
 import { faGear, faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
-import { ChordDisplay, RhythmDisplay, Section } from 'tab-sketch/react'
+import { ChordDisplay, RhythmDisplay, Section, TabDisplay } from 'tab-sketch/react'
 import { TipoBloco, selectBlocos, removerBloco } from '../store/cifraSlice'
 import { useNavigate } from 'react-router-dom'
 import { useRef, useState } from 'react'
@@ -61,6 +61,22 @@ export default function NovaCifra() {
                   </Card>
                 )
               }
+              if (bloco.tipo === TipoBloco.TABLATURA) {
+                return (
+                  <Card
+                    key={bloco.id}
+                    title={bloco.titulo}
+                    action={
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        <Button icon={faTrash} tipo={TipoBotao.AUXILIAR} label={'Remover'} onClick={() => dispatch(removerBloco(bloco.id))} />
+                        <Button icon={faPen} tipo={TipoBotao.AUXILIAR} label={'Editar'} onClick={() => navigate(`/edicao-cifra/edicao-tablatura?bloco=${bloco.id}`)} />
+                      </div>
+                    }
+                  >
+                    <TabDisplay tab={bloco.dados?.tab ?? ''} />
+                  </Card>
+                )
+              }
               if (bloco.tipo === TipoBloco.LETRA) {
                 return (
                   <Card
@@ -104,7 +120,7 @@ export default function NovaCifra() {
         <FloatingMenu
           icon={faPlus}
           acoes={[
-            { label: 'Tablatura', onClick: () => { /* ... */ } },
+            { label: 'Tablatura', onClick: () => navigate('/edicao-cifra/edicao-tablatura') },
             { label: 'Acordes', onClick: () => navigate('/edicao-cifra/edicao-acordes') },
             { label: 'Ritmo', onClick: () => navigate('/edicao-cifra/edicao-ritmo') },
             { label: 'Letra', onClick: () => navigate('/edicao-cifra/edicao-letra') },

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Card from "../componentes/Card/Card";
 import NavTop from "../componentes/NavTop/NavTop";
+import BotaoTopo from "../componentes/BotaoTopo/BotaoTopo";
 
 
 const ConsultaCifra = () => {
@@ -81,6 +82,7 @@ const ConsultaCifra = () => {
           ))}
         </div>
       </div>
+      <BotaoTopo />
     </div>
   )
 }

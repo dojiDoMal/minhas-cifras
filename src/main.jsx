@@ -10,6 +10,7 @@ import NovaCifra from './paginas/NovaCifra.jsx'
 import EdicaoRitmo from './paginas/EdicaoRitmo.jsx'
 import EdicaoAcordes from './paginas/EdicaoAcordes.jsx'
 import EdicaoLetra from './paginas/EdicaoLetra.jsx'
+import EdicaoTablatura from './paginas/EdicaoTablatura.jsx'
 import ConsultaCifra from './paginas/ConsultaCifra.jsx'
 
 const router = createBrowserRouter([
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
   { path: '/edicao-cifra/edicao-ritmo', element: <EdicaoRitmo /> },
   { path: '/edicao-cifra/edicao-acordes', element: <EdicaoAcordes /> },
   { path: '/edicao-cifra/edicao-letra', element: <EdicaoLetra /> },
+  { path: '/edicao-cifra/edicao-tablatura', element: <EdicaoTablatura /> },
   { path: '/consulta-cifra/:id', element: <ConsultaCifra /> },
   { path: '/edicao-cifra/:id', element: <NovaCifra /> },
 ])

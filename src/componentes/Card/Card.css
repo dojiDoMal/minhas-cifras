@@ -37,7 +37,7 @@
   justify-content: space-between;
   align-items: center;
   height: 32px;
-  width: stretch;
+  flex: 1;
 }
 
 .card-header-info {
@@ -165,6 +165,7 @@
   overflow-x: auto;
   flex-wrap: nowrap;
   justify-content: flex-start;
+  flex: 2;
 }
 
 .card-content.card-row>* {

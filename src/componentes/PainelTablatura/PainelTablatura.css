@@ -1,0 +1,79 @@
+.painel-tablatura {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-1);
+  border-top: 1px solid var(--border-1);
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+  transition: transform 0.25s ease;
+}
+
+/* Quando minimizado, desliza para baixo deixando apenas o handle visível. */
+.painel-tablatura--minimizado {
+  transform: translateY(calc(100% - var(--painel-tablatura-handle-altura, 28px)));
+}
+
+/* --- Handle de arrastar --- */
+.painel-tablatura__handle {
+  --painel-tablatura-handle-altura: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.painel-tablatura__handle:active {
+  cursor: grabbing;
+}
+
+.painel-tablatura__handle-barra {
+  width: 40px;
+  height: 4px;
+  border-radius: 100px;
+  background-color: var(--border-2);
+  transition: background-color 0.2s;
+}
+
+.painel-tablatura__handle:hover .painel-tablatura__handle-barra {
+  background-color: var(--color-white-ghost);
+}
+
+.painel-tablatura__handle:focus-visible {
+  outline: none;
+}
+
+.painel-tablatura__handle:focus-visible .painel-tablatura__handle-barra {
+  background-color: var(--purple-1);
+}
+
+/* --- Conteúdo --- */
+.painel-tablatura__conteudo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 8px 24px 24px;
+}
+
+.painel-tablatura__label {
+  font-weight: 600;
+}
+
+.painel-tablatura__grade {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+}
+
+/* Controles usam o padrão btn-auxiliar; aqui só ajustamos o alinhamento. */
+.painel-tablatura__botao {
+  justify-content: center;
+}
