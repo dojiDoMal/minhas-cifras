@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { faAngleLeft, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ChordEditor, ChordLib, Section } from 'tab-sketch/react'
+import { chords as todosAcordes } from 'tab-sketch'
 import Button, { TipoBotao } from '../componentes/Button/Button'
 import Card from '../componentes/Card/Card'
 import Spacer from '../componentes/Spacer/Spacer'
@@ -31,6 +32,12 @@ export default function EdicaoAcordes() {
   // Rascunho local dos acordes. Só vira bloco ao clicar em "Adicionar"/"Salvar".
   const [tituloCardAcordes, setTituloCardAcordes] = useState(blocoExistente?.titulo || 'Acordes 1')
   const [acordes, setAcordes] = useState(acordesIniciais)
+  const [buscaAcorde, setBuscaAcorde] = useState('')
+
+  const todosNomesAcordes = Object.keys(todosAcordes)
+  const nomesFiltrados = buscaAcorde
+    ? todosNomesAcordes.filter((nome) => nome.toLowerCase().includes(buscaAcorde.toLowerCase()))
+    : undefined // undefined = ChordLib mostra todos por padrão
 
   // Adiciona um acorde da biblioteca ao editor (via clique no "+").
   const adicionarAcordeAoEditor = (entry) => {
@@ -106,7 +113,22 @@ export default function EdicaoAcordes() {
             </Card>
 
             <Card title={'Biblioteca de acordes'}>
-              <ChordLib onAdd={adicionarAcordeAoEditor} />
+              <input
+                type="text"
+                placeholder="Buscar acorde..."
+                value={buscaAcorde}
+                onChange={(e) => setBuscaAcorde(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '6px 10px',
+                  borderRadius: '6px',
+                  border: '1px solid var(--border-1)',
+                  color: 'var(--color-white)',
+                  fontSize: '0.9rem',
+                  marginBottom: '8px',
+                }}
+              />
+              <ChordLib chordNames={nomesFiltrados} onAdd={adicionarAcordeAoEditor} />
             </Card>
           </Section>
         </div>

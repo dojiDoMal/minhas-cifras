@@ -2,10 +2,19 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Provider } from 'react-redux'
+import { Capacitor } from '@capacitor/core'
+import { StatusBar, Style } from '@capacitor/status-bar'
 import { store } from './store'
 import './index.css'
 import App from './App.jsx'
 import './App.css'
+
+if (Capacitor.isNativePlatform()) {
+  StatusBar.setOverlaysWebView({ overlay: false })
+    .then(() => StatusBar.setBackgroundColor({ color: '#0f1620' }))
+    .then(() => StatusBar.setStyle({ style: Style.Dark }))
+    .catch((error) => console.warn('Não foi possível configurar a status bar:', error))
+}
 import NovaCifra from './paginas/NovaCifra.jsx'
 import EdicaoRitmo from './paginas/EdicaoRitmo.jsx'
 import EdicaoAcordes from './paginas/EdicaoAcordes.jsx'

@@ -1,7 +1,7 @@
 {
-  "name": "web",
+  "name": "minhas-cifras",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,14 +9,15 @@
     "lint": "oxlint",
     "clean-install": "rimraf node_modules package-lock.json && npm cache clean -f && npm i",
     "preview": "vite preview",
-    "android": "vite build && npx cap sync android && cd android && gradlew assembleDebug",
-    "android:release": "vite build && npx cap sync android && cd android && gradlew assembleRelease"
+    "android": "rimraf android && vite build && npx cap add android && npx capacitor-assets generate --android && npx cap sync android && cd android && gradlew assembleDebug",
+    "android:release": "rimraf android && vite build && npx cap add android && npx capacitor-assets generate --android && npx cap sync android && node --env-file=.env scripts/gradle-release.mjs"
   },
   "dependencies": {
     "@capacitor/android": "6.2.1",
     "@capacitor/cli": "6.2.1",
     "@capacitor/core": "6.2.1",
-    "@capacitor/filesystem": "7.1.8",
+    "@capacitor/filesystem": "6.0.4",
+    "@capacitor/status-bar": "6.0.3",
     "@fortawesome/fontawesome-svg-core": "7.3.1",
     "@fortawesome/free-solid-svg-icons": "7.3.1",
     "@fortawesome/react-fontawesome": "3.5.0",
@@ -25,13 +26,15 @@
     "react-dom": "18.0.0",
     "react-redux": "9.3.0",
     "react-router-dom": "7.18.2",
-    "tab-sketch": "file:../tab-sketch/tab-sketch-1.0.0-beta.1.tgz",
+    "tab-sketch": "1.0.0",
     "uuid": "14.0.2"
   },
   "devDependencies": {
+    "@capacitor/assets": "3.0.5",
     "@types/react": "18.3.31",
     "@types/react-dom": "18.3.5",
     "@vitejs/plugin-react-swc": "4.3.3",
+    "copyfiles": "^2.4.1",
     "oxlint": "1.71.0",
     "rimraf": "4.4.1",
     "vite": "8.1.1"

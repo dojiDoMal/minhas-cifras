@@ -65,7 +65,7 @@ const ConsultaCifra = () => {
         subtitle={cifra?.artista}
         onBack={() => navigate('/')}
         actionIcon={faPen}
-        onAction={() => navigate(`/editar/${id}`)}
+        onAction={() => navigate(`/edicao-cifra/${id}`)}
       />
       <div className="main">
         <div className="main-content">

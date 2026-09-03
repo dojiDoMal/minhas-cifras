@@ -51,6 +51,7 @@ function novoBloco({ tipo, titulo, dados } = {}) {
 
 const estadoInicial = {
   titulo: '',
+  artista: '',
   secoes: [novaSecao()],
 }
 
@@ -148,9 +149,31 @@ const cifraSlice = createSlice({
       secao.blocos.splice(para, 0, bloco)
     },
 
+    // Carrega uma cifra inteira no store (usado na edição de uma cifra existente).
+    // payload: { titulo?, artista?, secoes? }
+    carregarCifra(state, action) {
+      const cifra = action.payload ?? {}
+      const secoes = Array.isArray(cifra.secoes) && cifra.secoes.length > 0
+        ? cifra.secoes.map((s) =>
+          novaSecao({
+            titulo: s.titulo,
+            capo: s.capo,
+            tuning: s.tuning,
+            bpm: s.bpm,
+            blocos: (s.blocos ?? []).map((b) => novoBloco({ tipo: b.tipo, titulo: b.titulo, dados: b.dados })),
+          }),
+        )
+        : [novaSecao()]
+      return {
+        titulo: cifra.titulo ?? '',
+        artista: cifra.artista ?? '',
+        secoes,
+      }
+    },
+
     // Zera a cifra inteira
     resetCifra() {
-      return { titulo: '', secoes: [novaSecao()] }
+      return { titulo: '', artista: '', secoes: [novaSecao()] }
     },
   },
 })
@@ -165,11 +188,37 @@ export const {
   atualizarDadosBloco,
   removerBloco,
   moverBloco,
+  carregarCifra,
   resetCifra,
 } = cifraSlice.actions
 
+// Gera uma assinatura estável do conteúdo semântico da cifra, ignorando
+// os `id`s voláteis (regerados por `carregarCifra`/`novaSecao`/`novoBloco`).
+// Serve para detectar se houve mudança em relação ao estado carregado.
+// payload: { titulo?, artista?, secoes? }
+export function assinaturaCifra(cifra = {}) {
+  const normalizada = {
+    titulo: (cifra.titulo ?? '').trim(),
+    artista: (cifra.artista ?? '').trim(),
+    secoes: (cifra.secoes ?? []).map((s) => ({
+      titulo: s.titulo ?? '',
+      capo: s.capo ?? 0,
+      tuning: s.tuning ?? 0,
+      bpm: s.bpm ?? 0,
+      blocos: (s.blocos ?? []).map((b) => ({
+        tipo: b.tipo,
+        titulo: b.titulo ?? '',
+        dados: b.dados ?? {},
+      })),
+    })),
+  }
+  return JSON.stringify(normalizada)
+}
+
 // Selectors
 export const selectCifra = (state) => state.cifra
+export const selectTitulo = (state) => state.cifra.titulo
+export const selectArtista = (state) => state.cifra.artista
 export const selectSecoes = (state) => state.cifra.secoes
 export const selectSecaoPorId = (id) => (state) =>
   state.cifra.secoes.find((s) => s.id === id)

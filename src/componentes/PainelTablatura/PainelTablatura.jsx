@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  faArrowLeft,
-  faArrowRight,
   faDeleteLeft,
+  faPlus,
   faRotateLeft,
   faRotateRight,
+  faTableColumns,
 } from '@fortawesome/free-solid-svg-icons'
 import './PainelTablatura.css'
 
@@ -67,8 +67,8 @@ export default function PainelTablatura({ editorRef }) {
   }
 
   const controles = [
-    { icone: faArrowLeft, label: 'Adicionar coluna antes', onClick: acionar('addColumnBefore') },
-    { icone: faArrowRight, label: 'Adicionar coluna depois', onClick: acionar('addColumnAfter') },
+    { icone: faTableColumns, ladoMais: 'antes', label: 'Adicionar coluna antes', onClick: acionar('addColumnBefore') },
+    { icone: faTableColumns, ladoMais: 'depois', label: 'Adicionar coluna depois', onClick: acionar('addColumnAfter') },
     { icone: faDeleteLeft, label: 'Remover coluna antes', onClick: acionar('removeColumnBefore') },
     { icone: faDeleteLeft, label: 'Remover coluna depois', onClick: acionar('removeColumnAfter'), espelhar: true },
     { icone: faRotateLeft, label: 'Desfazer', onClick: acionar('undo') },
@@ -91,7 +91,7 @@ export default function PainelTablatura({ editorRef }) {
       </div>
 
       <div className="painel-tablatura__conteudo">
-        <label className="painel-tablatura__label">Controles da tablatura</label>
+        <label className="painel-tablatura__label">Edição rápida</label>
 
         <div className="painel-tablatura__grade">
           {controles.map((controle) => (
@@ -103,10 +103,21 @@ export default function PainelTablatura({ editorRef }) {
               title={controle.label}
               onClick={controle.onClick}
             >
-              <FontAwesomeIcon
-                icon={controle.icone}
-                style={controle.espelhar ? { transform: 'scaleX(-1)' } : undefined}
-              />
+              {controle.ladoMais ? (
+                <span
+                  className={`painel-tablatura__icone-mais painel-tablatura__icone-mais--${controle.ladoMais}`}
+                  aria-hidden="true"
+                >
+                  <FontAwesomeIcon icon={controle.icone} />
+                  <FontAwesomeIcon icon={faPlus} className="painel-tablatura__mais" />
+                </span>
+              ) : (
+                <FontAwesomeIcon
+                  icon={controle.icone}
+                  style={controle.espelhar ? { transform: 'scaleX(-1)' } : undefined}
+                />
+              )}
+              <span className="painel-tablatura__botao-texto">{controle.label}</span>
             </button>
           ))}
         </div>

@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { faAngleLeft, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { TabEditor } from 'tab-sketch/react'
+import { TabDisplay, TabEditor } from 'tab-sketch/react'
 import Button, { TipoBotao } from '../componentes/Button/Button'
 import Card from '../componentes/Card/Card'
 import Spacer from '../componentes/Spacer/Spacer'
@@ -42,6 +42,10 @@ export default function EdicaoTablatura() {
   // na hora de salvar.
   const tabInicial = blocoEmEdicao?.dados?.tab || TAB_VAZIA
   const tabRef = useRef(tabInicial)
+
+  // Estado usado apenas para a pré-visualização. Diferente do tabRef, alterar
+  // este estado dispara re-render, então o TabDisplay acompanha as edições.
+  const [tabPreview, setTabPreview] = useState(tabInicial)
 
   // Persiste a tablatura montada e volta para a edição da cifra.
   // Se estamos editando um bloco existente, atualiza; senão, cria um novo.
@@ -85,6 +89,7 @@ export default function EdicaoTablatura() {
                 onClick={() => {
                   editorRef?.current?.clear()
                   tabRef.current = TAB_VAZIA
+                  setTabPreview(TAB_VAZIA)
                 }}
               />
             }
@@ -93,10 +98,17 @@ export default function EdicaoTablatura() {
             <TabEditor
               ref={editorRef}
               tab={tabInicial}
+              showPreview={false}
               onChange={(value) => {
                 tabRef.current = value
+                setTabPreview(value)
               }}
             />
+            <Card
+              subtitle={"Pré-visualização"}
+            >
+              <TabDisplay tab={tabPreview} />
+            </Card>
             <Spacer />
             <Button
               tipo={TipoBotao.PRIMARIO}

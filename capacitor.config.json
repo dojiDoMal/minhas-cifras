@@ -1,5 +1,12 @@
 {
   "appId": "com.dojidev.minhascifras",
   "appName": "Minhas cifras",
-  "webDir": "dist"
+  "webDir": "dist",
+  "plugins": {
+    "StatusBar": {
+      "backgroundColor": "#0f1620",
+      "style": "DARK",
+      "overlaysWebView": false
+    }
+  }
 }

@@ -69,11 +69,59 @@
 
 .painel-tablatura__grade {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(146px, 1fr));
   gap: 8px;
 }
 
-/* Controles usam o padrão btn-auxiliar; aqui só ajustamos o alinhamento. */
 .painel-tablatura__botao {
+  /* Espelha o fundo do .btn-auxiliar para o contorno do "+" casar com ele. */
+  --cor-fundo-botao: #1b2534;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+.painel-tablatura__botao:hover {
+  --cor-fundo-botao: #273243;
+}
+
+.painel-tablatura__botao:active {
+  --cor-fundo-botao: #313c4d;
+}
+
+.painel-tablatura__botao-texto {
+  font-size: 0.75rem;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Ícone de "adicionar coluna": o ícone de colunas com um "+" sobreposto
+   indicando de que lado a coluna será inserida (antes = esquerda,
+   depois = direita). */
+.painel-tablatura__icone-mais {
+  position: relative;
+  display: inline-flex;
+}
+
+.painel-tablatura__mais {
+  position: absolute;
+  top: 0.1em;
+  color: #ffffff;
+  font-size: 1em;
+  transform: scale(0.65);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  filter:
+    drop-shadow(1px 0 1px var(--cor-fundo-botao)) drop-shadow(-1px 0 1px var(--cor-fundo-botao)) drop-shadow(0 1px 1px var(--cor-fundo-botao)) drop-shadow(0 -1px 1px var(--cor-fundo-botao));
+}
+
+.painel-tablatura__icone-mais--antes .painel-tablatura__mais {
+  left: -0.6em;
+}
+
+.painel-tablatura__icone-mais--depois .painel-tablatura__mais {
+  right: -0.6em;
 }
