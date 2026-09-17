@@ -15,12 +15,16 @@ if (Capacitor.isNativePlatform()) {
     .then(() => StatusBar.setStyle({ style: Style.Dark }))
     .catch((error) => console.warn('Não foi possível configurar a status bar:', error))
 }
+
 import NovaCifra from './paginas/NovaCifra.jsx'
 import EdicaoRitmo from './paginas/EdicaoRitmo.jsx'
 import EdicaoAcordes from './paginas/EdicaoAcordes.jsx'
 import EdicaoLetra from './paginas/EdicaoLetra.jsx'
 import EdicaoTablatura from './paginas/EdicaoTablatura.jsx'
 import ConsultaCifra from './paginas/ConsultaCifra.jsx'
+import Playback from './paginas/Playback.jsx'
+import EdicaoPlayback from './paginas/EdicaoPlayback.jsx'
+import ConsultaPlayback from './paginas/ConsultaPlayback.jsx'
 
 const router = createBrowserRouter([
   { path: '/', element: <App /> },
@@ -31,6 +35,9 @@ const router = createBrowserRouter([
   { path: '/edicao-cifra/edicao-tablatura', element: <EdicaoTablatura /> },
   { path: '/consulta-cifra/:id', element: <ConsultaCifra /> },
   { path: '/edicao-cifra/:id', element: <NovaCifra /> },
+  { path: '/playback', element: <Playback /> },
+  { path: '/consulta-playback/:id', element: <EdicaoPlayback /> },
+
 ])
 
 createRoot(document.getElementById('root')).render(

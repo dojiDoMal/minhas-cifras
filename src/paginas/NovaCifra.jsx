@@ -10,6 +10,7 @@ import AppFooter from '../componentes/AppFooter/AppFooter'
 import Button, { FloatingMenu, TipoBotao } from '../componentes/Button/Button'
 import Card from '../componentes/Card/Card'
 import NavTop from '../componentes/NavTop/NavTop'
+import { FILE_SYSTEM_TYPE } from '../js/FileSystem'
 
 export default function NovaCifra() {
   const navigate = useNavigate()
@@ -40,7 +41,7 @@ export default function NovaCifra() {
 
     setCarregando(true)
     getFileSystem()
-      .lerCifra(id)
+      .ler(id, FILE_SYSTEM_TYPE.CIFRA)
       .then((cifra) => {
         if (cancelado) return
         if (!cifra) {
@@ -90,7 +91,7 @@ export default function NovaCifra() {
         artista: artista.trim() || '',
         secoes,
       }
-      await getFileSystem().salvarCifra(idCifra, cifra)
+      await getFileSystem().salvar(idCifra, cifra, FILE_SYSTEM_TYPE.CIFRA)
       dispatch(resetCifra())
       navigate('/')
     } catch (erro) {

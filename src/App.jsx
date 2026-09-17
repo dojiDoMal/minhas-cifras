@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Button, { TipoBotao } from './componentes/Button/Button';
 import Card from './componentes/Card/Card'
 import Navbar from './componentes/Navbar/Navbar';
+import { FILE_SYSTEM_TYPE } from './js/FileSystem';
 
 export default function App() {
   const navigate = useNavigate()
@@ -17,14 +18,18 @@ export default function App() {
   const [cifras, setCifras] = useState([])
 
   useEffect(() => {
-    fs.listarCifras()
+    fs.listar(FILE_SYSTEM_TYPE.CIFRA)
       .then(res => { console.log(res); setCifras(res) })
       .catch(err => { /** TODO */ })
   }, [])
 
   return (
     <div className="container">
-      <Navbar tab="home" onNovaCifra={() => navigate('/edicao-cifra')} />
+      <Navbar
+        tab="home"
+        onNovaCifra={() => navigate('/edicao-cifra')}
+        onPlayback={() => navigate('/playback')}
+      />
 
       <div className="main">
         <div className='main-content'>
@@ -38,7 +43,7 @@ export default function App() {
                   onClick={(e) => {
                     e.stopPropagation()
                     const currentId = c.id;
-                    fs.removerCifra(currentId)
+                    fs.remover(currentId, FILE_SYSTEM_TYPE.CIFRA)
                     setCifras(prev => prev.filter(i => i.id !== currentId))
                   }}
                 />

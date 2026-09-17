@@ -1,0 +1,72 @@
+.playback-tom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.playback-tom-valor {
+  min-width: 48px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.playback-volume {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.playback-volume+.playback-volume {
+  margin-top: 16px;
+}
+
+.playback-volume label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.playback-volume-valor {
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+
+.playback-volume input[type="range"] {
+  width: 100%;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  cursor: pointer;
+  outline: none;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 100%;
+  background: #2c3542;
+  border-radius: 4px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  /* removing default appearance */
+  -webkit-appearance: none;
+  appearance: none;
+  /* creating a custom design */
+  height: 100%;
+  width: 12px;
+  background-color: #ffffffaa;
+  border-radius: 0px;
+  box-shadow: -707px 0 0 700px #766ed7;
+}
+
+/* Compensa o espaço do player fixo (PlaybackPlayer) na parte inferior,
+   para o conteúdo não ficar encoberto. */
+.container-com-player {
+  padding-bottom: calc(var(--playback-player-height) + 2rem);
+}

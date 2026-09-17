@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Card from "../componentes/Card/Card";
 import NavTop from "../componentes/NavTop/NavTop";
 import BotaoTopo from "../componentes/BotaoTopo/BotaoTopo";
+import { FILE_SYSTEM_TYPE } from "../js/FileSystem";
 
 
 const ConsultaCifra = () => {
@@ -18,7 +19,7 @@ const ConsultaCifra = () => {
 
   useEffect(() => {
     if (id) {
-      fs.lerCifra(id)
+      fs.ler(id, FILE_SYSTEM_TYPE.CIFRA)
         .then(res => { setCifra(res) })
         .catch(err => { /** TODO */ })
     }

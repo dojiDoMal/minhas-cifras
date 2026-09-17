@@ -1,0 +1,90 @@
+.playback-player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0.75rem 1rem;
+  background-color: var(--background-1);
+  border-top: 1px solid var(--border-1);
+}
+
+.playback-player-progresso {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.playback-player-tempo {
+  min-width: 40px;
+  font-size: 0.85rem;
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+
+.playback-player-tempo:last-child {
+  text-align: right;
+}
+
+.playback-player-seek {
+  flex: 1;
+}
+
+.playback-player-controles {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.playback-player-botao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--background-3);
+  color: var(--color-white);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.playback-player-botao:hover:not(:disabled) {
+  background-color: var(--background-2);
+  color: var(--color-white-hover);
+}
+
+.playback-player-botao:disabled {
+  color: var(--color-aux-disabled);
+  cursor: not-allowed;
+}
+
+.playback-player-botao-principal {
+  width: 56px;
+  height: 56px;
+  font-size: 1.4rem;
+  background-color: var(--purple-1);
+  color: var(--color-white);
+}
+
+.playback-player-botao-principal:hover:not(:disabled) {
+  background-color: var(--purple-2);
+  color: var(--color-white);
+}
+
+.playback-player-botao-principal:disabled {
+  background-color: var(--background-3);
+  color: var(--color-aux-disabled);
+}
+
+/* Altura ocupada pelo player fixo, para o conteúdo da página compensar o
+   espaço e não ficar encoberto. Ver `.container-com-footer`. */
+:root {
+  --playback-player-height: 132px;
+}
