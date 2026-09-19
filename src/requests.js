@@ -169,3 +169,30 @@ export const postArquivoSeguro = (path, data, onSuccess, onError) => {
         .then(dados => onSuccess(dados))
         .catch(err => onError(err))
 }
+
+export const getArquivoSeguro = (path, onSuccess, onError) => {
+
+    if (!onSuccess || !onError) {
+        throw new Error('Parâmetro(s) não informado(s) na chada do getArquivoSeguro!')
+    }
+
+    customFetch(gatewayApiUrl + path, { method: 'GET' })
+        .then(async res => {
+            if (!res.ok) {
+                let corpoErro = null
+                try {
+                    corpoErro = await res.json()
+                } catch {
+                    // corpo de erro pode não ser JSON
+                }
+                const erro = new Error(`Requisição para "${path}" falhou com status ${res.status}`)
+                erro.status = res.status
+                erro.body = corpoErro
+                throw erro
+            }
+            // Retorna o Response para o chamador ler como blob (ex.: download de zip).
+            return res
+        })
+        .then(dados => onSuccess(dados))
+        .catch(err => onError(err))
+}

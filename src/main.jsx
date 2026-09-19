@@ -24,7 +24,6 @@ import EdicaoTablatura from './paginas/EdicaoTablatura.jsx'
 import ConsultaCifra from './paginas/ConsultaCifra.jsx'
 import Playback from './paginas/Playback.jsx'
 import EdicaoPlayback from './paginas/EdicaoPlayback.jsx'
-import ConsultaPlayback from './paginas/ConsultaPlayback.jsx'
 
 const router = createBrowserRouter([
   { path: '/', element: <App /> },
@@ -36,7 +35,7 @@ const router = createBrowserRouter([
   { path: '/consulta-cifra/:id', element: <ConsultaCifra /> },
   { path: '/edicao-cifra/:id', element: <NovaCifra /> },
   { path: '/playback', element: <Playback /> },
-  { path: '/consulta-playback/:id', element: <EdicaoPlayback /> },
+  { path: '/edicao-playback/:id', element: <EdicaoPlayback /> },
 
 ])
 
