@@ -22,7 +22,7 @@ import EdicaoAcordes from './paginas/EdicaoAcordes.jsx'
 import EdicaoLetra from './paginas/EdicaoLetra.jsx'
 import EdicaoTablatura from './paginas/EdicaoTablatura.jsx'
 import ConsultaCifra from './paginas/ConsultaCifra.jsx'
-import Playback from './paginas/Playback.jsx'
+import Playback from './paginas/Playback/Playback.jsx'
 import EdicaoPlayback from './paginas/EdicaoPlayback.jsx'
 
 const router = createBrowserRouter([
