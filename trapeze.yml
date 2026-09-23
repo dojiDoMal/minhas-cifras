@@ -1,6 +1,6 @@
 platforms:
   android:
-    versionName: 2.1.0
+    versionName: 2.1.1
     manifest:
       - file: AndroidManifest.xml
         target: manifest

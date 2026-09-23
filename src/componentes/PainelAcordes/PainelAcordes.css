@@ -52,7 +52,7 @@
 }
 
 .painel-acordes__handle:focus-visible .painel-acordes__handle-barra {
-  background-color: var(--purple-1);
+  background-color: var(--color-action-1);
 }
 
 /* --- Conteúdo --- */

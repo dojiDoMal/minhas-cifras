@@ -1,9 +1,9 @@
 :root {
-  --purple-1: #766ed7;
-  --purple-2: #7d76ce;
-  --purple-3: #8c85d6;
+  --color-action-1: #766ed7;
+  --color-action-2: #7d76ce;
+  --color-action-3: #8c85d6;
   --color-info-1: #629dd5;
-  --color-info-2: #78aee0;
+  --color-info-2: #629dd5;
   --color-info-glow: #629dd566;
   --color-success-1: #106b40;
   --color-success-2: #6dbf6d;
@@ -19,9 +19,10 @@
   --color-white-ghost-hover: #999;
   --color-white-ghost-active: #aeaeae;
   --color-white-hover: #c6c6c6;
+  --color-white-btn: #a4a4a4;
   --color-white-active: #acacac;
   --color-aux-disabled: #666;
-  --background-1: #141b25;
+  --background-1: #1d252f;
   --background-2: #1c242e;
   --background-3: #1f2530;
   --input-background: #0d131c;

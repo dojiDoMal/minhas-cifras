@@ -71,7 +71,7 @@
 .btn-primario {
   width: 100%;
   padding: 0.6rem;
-  background: var(--purple-1);
+  background: var(--color-action-1);
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -80,11 +80,11 @@
 }
 
 .btn-primario:hover {
-  background: var(--purple-2);
+  background: var(--color-action-2);
 }
 
 .btn-primario:active {
-  background: var(--purple-3);
+  background: var(--color-action-3);
 }
 
 .btn-primario:disabled {
@@ -97,8 +97,8 @@
   width: 100%;
   padding: 0.6rem;
   background: transparent;
-  color: var(--purple-1);
-  border: 1px solid var(--purple-1);
+  color: var(--color-action-1);
+  border: 1px solid var(--color-action-1);
   border-radius: 6px;
   font-size: 1rem;
   cursor: pointer;
@@ -106,14 +106,14 @@
 
 .btn-secundario:hover {
   background: transparent;
-  color: var(--purple-2);
-  border-color: var(--purple-2);
+  color: var(--color-action-2);
+  border-color: var(--color-action-2);
 }
 
 .btn-secundario:active {
   background: transparent;
-  color: var(--purple-3);
-  border-color: var(--purple-3);
+  color: var(--color-action-3);
+  border-color: var(--color-action-3);
 }
 
 .btn-secundario:disabled {
@@ -127,7 +127,7 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background-color: var(--purple-1);
+  background-color: var(--color-action-1);
   color: #fff;
   border: none;
   cursor: pointer;
@@ -139,11 +139,11 @@
 }
 
 .btn-flutuante:hover {
-  background-color: var(--purple-2);
+  background-color: var(--color-action-2);
 }
 
 .btn-flutuante:active {
-  background-color: var(--purple-3);
+  background-color: var(--color-action-3);
 }
 
 .floating-menu {
@@ -169,7 +169,7 @@
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  background-color: var(--purple-1);
+  background-color: var(--color-action-1);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -180,11 +180,11 @@
 }
 
 .btn-flutuante-acao:hover {
-  background-color: var(--purple-2);
+  background-color: var(--color-action-2);
 }
 
 .btn-flutuante-acao:active {
-  background-color: var(--purple-3);
+  background-color: var(--color-action-3);
 }
 
 .btn-tall {

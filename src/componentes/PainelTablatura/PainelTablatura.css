@@ -52,7 +52,7 @@
 }
 
 .painel-tablatura__handle:focus-visible .painel-tablatura__handle-barra {
-  background-color: var(--purple-1);
+  background-color: var(--color-action-1);
 }
 
 /* --- Conteúdo --- */

@@ -1,5 +1,5 @@
 .icone-titulo {
-  color: var(--purple-1);
+  color: var(--color-action-1);
   transform: rotateZ(45deg);
   margin-right: 4px;
   font-size: 20px;
@@ -39,5 +39,5 @@
 }
 
 .nav-bottom button.active {
-  color: var(--purple-1);
+  color: var(--color-action-1);
 }

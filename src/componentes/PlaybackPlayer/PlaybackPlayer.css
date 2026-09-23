@@ -69,12 +69,12 @@
   width: 56px;
   height: 56px;
   font-size: 1.4rem;
-  background-color: var(--purple-1);
+  background-color: var(--color-action-1);
   color: var(--color-white);
 }
 
 .playback-player-botao-principal:hover:not(:disabled) {
-  background-color: var(--purple-2);
+  background-color: var(--color-action-2);
   color: var(--color-white);
 }
 

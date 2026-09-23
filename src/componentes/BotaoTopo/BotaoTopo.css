@@ -10,7 +10,7 @@
   justify-content: center;
   border: 1px solid var(--border-2);
   border-radius: 50%;
-  background: var(--purple-1);
+  background: var(--color-action-1);
   color: var(--color-white);
   font-size: 1.2rem;
   cursor: pointer;
@@ -19,7 +19,7 @@
 }
 
 .botao-topo:hover {
-  background: var(--purple-2);
+  background: var(--color-action-2);
 }
 
 .botao-topo:active {

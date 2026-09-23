@@ -132,7 +132,7 @@ textarea {
 }
 
 .toggle input:checked+.toggle-slider {
-  background: var(--purple-1);
+  background: var(--color-action-1);
 }
 
 .toggle input:checked+.toggle-slider::before {
