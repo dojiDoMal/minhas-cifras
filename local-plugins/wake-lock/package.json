@@ -1,0 +1,21 @@
+{
+  "name": "wake-lock",
+  "version": "1.0.0",
+  "description": "Plugin Capacitor local: PARTIAL_WAKE_LOCK para manter a CPU acordada com a tela apagada durante a reprodução de áudio.",
+  "main": "dist/plugin.js",
+  "module": "dist/plugin.js",
+  "types": "dist/plugin.d.ts",
+  "type": "module",
+  "files": [
+    "dist/",
+    "android/"
+  ],
+  "capacitor": {
+    "android": {
+      "src": "android"
+    }
+  },
+  "peerDependencies": {
+    "@capacitor/core": "^6.0.0"
+  }
+}

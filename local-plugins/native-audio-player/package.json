@@ -1,0 +1,21 @@
+{
+  "name": "native-audio-player",
+  "version": "1.0.0",
+  "description": "Plugin Capacitor local: reprodução nativa (Media3/ExoPlayer) de dois stems sincronizados, com pitch e volumes independentes em tempo real.",
+  "main": "dist/plugin.js",
+  "module": "dist/plugin.js",
+  "types": "dist/plugin.d.ts",
+  "type": "module",
+  "files": [
+    "dist/",
+    "android/"
+  ],
+  "capacitor": {
+    "android": {
+      "src": "android"
+    }
+  },
+  "peerDependencies": {
+    "@capacitor/core": "^6.0.0"
+  }
+}

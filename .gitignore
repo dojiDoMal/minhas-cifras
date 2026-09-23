@@ -10,6 +10,7 @@ package-lock.json
 *.jks
 keystore.properties
 .env
+.env.production
 
 android
 node_modules

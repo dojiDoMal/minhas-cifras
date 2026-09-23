@@ -1,3 +1,5 @@
+import { getArquivoSeguro, getSeguro, postArquivoSeguro } from '../../requests'
+
 // Intervalo entre consultas de status do processamento (ms).
 export const INTERVALO_POLLING_MS = 5 * 60 * 1000 // 5 min
 

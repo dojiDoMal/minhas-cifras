@@ -1,3 +1,4 @@
+import { ScreenOrientation } from '@capacitor/screen-orientation'
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -35,7 +36,28 @@ export default function EdicaoPlayback() {
 
   // Player de áudio: toca os dois stems ao mesmo tempo, refletindo tom e
   // volumes em tempo real.
-  const player = useAudioPlayer({ fs, id, tom, volumeVoz, volumeInstrumentos })
+  const player = useAudioPlayer({ fs, id, tom, volumeVoz, volumeInstrumentos, titulo, artista })
+
+  // Trava a tela em modo retrato enquanto esta página estiver montada e
+  // libera a orientação ao sair. Envolvido em try/catch porque no navegador
+  // (fora do app nativo) a Screen Orientation API pode não estar disponível.
+  useEffect(() => {
+    if (Capacitor.isNativePlatform()) {
+      ScreenOrientation.lock({ orientation: 'portrait' })
+        .catch((erro) => {
+          console.warn('Não foi possível travar a orientação em retrato:', erro)
+        })
+    }
+
+    return () => {
+      if (Capacitor.isNativePlatform()) {
+        ScreenOrientation.unlock()
+          .catch((erro) => {
+            console.warn('Não foi possível liberar a orientação:', erro)
+          })
+      }
+    }
+  }, [])
 
   useEffect(() => {
     let cancelado = false

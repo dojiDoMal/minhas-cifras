@@ -1,0 +1,9 @@
+platforms:
+  android:
+    versionName: 2.1.0
+    manifest:
+      - file: AndroidManifest.xml
+        target: manifest
+        inject: |
+          <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+          <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />

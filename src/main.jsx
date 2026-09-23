@@ -36,7 +36,6 @@ const router = createBrowserRouter([
   { path: '/edicao-cifra/:id', element: <NovaCifra /> },
   { path: '/playback', element: <Playback /> },
   { path: '/edicao-playback/:id', element: <EdicaoPlayback /> },
-
 ])
 
 createRoot(document.getElementById('root')).render(

@@ -1,17 +1,24 @@
 import { aguardarProcessamento, enviarUpload, lerJobPendente, limparJobPendente, salvarJobPendente } from "./helper";
+import { exportarPlaybackComoMp3 } from "../../js/playbackExport";
 import { extrairStems, removerStems, salvarStems, tituloPadraoDoArquivo } from "../../js/playbackImport";
-import { faGear, faTrash } from "@fortawesome/free-solid-svg-icons"
+import { faFloppyDisk, faGear, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { FILE_SYSTEM_TYPE } from "../../js/FileSystem";
 import { getArquivoSeguro, getSeguro, postArquivoSeguro } from "../../requests";
 import { getFileSystem } from "../../js/FileSystemFactory";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from 'react-router-dom'
-import { v4 as uuidv4 } from 'uuid';
+import { v5 as uuidv5 } from 'uuid';
 import AppFooter from "../../componentes/AppFooter/AppFooter";
 import Button, { TipoBotao } from "../../componentes/Button/Button";
 import Card from "../../componentes/Card/Card";
 import NavTop from "../../componentes/NavTop/NavTop"
 import './Playback.css'
+
+
+// Namespace fixo para gerar ids de playback de forma determinística a partir
+// do jobId (uuidv5). Não deve mudar, sob pena de gerar ids diferentes para
+// jobs já existentes.
+const UUID_NAMESPACE_PLAYBACK = 'b6f1c0a2-3d4e-5f60-8a71-9c2d3e4f5a6b'
 
 
 const Playback = () => {
@@ -23,6 +30,9 @@ const Playback = () => {
 
   const [playbacks, setPlaybacks] = useState([])
   const [carregando, setCarregando] = useState(false)
+  // Id do playback sendo exportado no momento (null = nenhum), para desabilitar
+  // o botão e sinalizar o progresso da geração do MP3.
+  const [exportandoId, setExportandoId] = useState(null)
   const [temJobPendente, setTemJobPendente] = useState(() => !!lerJobPendente()?.jobId)
 
   const processandoRef = useRef(false)
@@ -41,10 +51,24 @@ const Playback = () => {
   // para montar o playback, inclusive numa retomada a frio em que o arquivo 
   // original não está mais em mãos).
   const concluirJob = async (jobId, nomeArquivo) => {
+    // Id determinístico a partir do jobId: se este caminho rodar duas vezes
+    // para o mesmo job (ex.: importação + retomada ao voltar ao app se
+    // sobrepondo), ambas as execuções resolvem para o MESMO id, sobrescrevendo
+    // o mesmo registro em vez de criar um playback duplicado.
+    const id = uuidv5(String(jobId), UUID_NAMESPACE_PLAYBACK)
+
+    // Se o job já foi concluído e persistido por outra execução, apenas
+    // finaliza (limpa o pendente e navega) sem reprocessar o zip.
+    const existente = await fs.ler(id, FILE_SYSTEM_TYPE.PLAYBACK)
+    if (existente) {
+      descartarJobPendente()
+      navigate(`/edicao-playback/${id}`)
+      return
+    }
+
     const zipBlob = await aguardarProcessamento(jobId)
     const stems = await extrairStems(zipBlob)
 
-    const id = uuidv4()
     await salvarStems(fs, id, stems)
 
     const playback = {
@@ -145,6 +169,31 @@ const Playback = () => {
     setPlaybacks(prev => prev.filter(i => i.id !== currentId))
   }
 
+  // Gera um único MP3 mixado a partir dos stems, já com o tom e os volumes
+  // configurados no playback, e o entrega ao usuário (download no navegador ou
+  // gravação em Documentos no app nativo).
+  const exportarPlayback = async (e, currentId) => {
+    e.stopPropagation()
+    if (exportandoId) return
+
+    setExportandoId(currentId)
+    try {
+      const playback = await fs.ler(currentId, FILE_SYSTEM_TYPE.PLAYBACK)
+      if (!playback) throw new Error('Playback não encontrado.')
+
+      const { nativo, caminho, nomeArquivo } = await exportarPlaybackComoMp3(fs, currentId, playback)
+
+      if (nativo) {
+        alert(`Playback salvo em Documentos como "${nomeArquivo}".${caminho ? `\n${caminho}` : ''}`)
+      }
+    } catch (erro) {
+      console.error('Falha ao exportar o playback:', erro)
+      alert('Não foi possível salvar o playback. Tente novamente.')
+    } finally {
+      setExportandoId(null)
+    }
+  }
+
   return (
     <div className="container container-com-footer">
       <NavTop
@@ -176,12 +225,21 @@ const Playback = () => {
             <Card
               key={c.id}
               action={
-                <Button
-                  icon={faTrash}
-                  tipo={TipoBotao.AUXILIAR}
-                  label={'Excluir'}
-                  onClick={(e) => excluirPlayback(e, c.id)}
-                />
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <Button
+                    icon={faFloppyDisk}
+                    tipo={TipoBotao.AUXILIAR}
+                    label={""}
+                    onClick={(e) => exportarPlayback(e, c.id)}
+                    disabled={!!exportandoId}
+                  />
+                  <Button
+                    icon={faTrash}
+                    tipo={TipoBotao.AUXILIAR}
+                    label={""}
+                    onClick={(e) => excluirPlayback(e, c.id)}
+                  />
+                </div>
               }
               clickable
               onClick={() => navigate(`/edicao-playback/${c.id}`)}
